@@ -1,0 +1,22 @@
+/* Поле и кнопка в одну строку, кнопка — на уровне поля */
+.rhumbsFilter {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rhumbsFilterGroup {
+  flex: 1;
+}
+
+.rhumbsFilterLabel {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+/* Фокус поля — красный, как кнопка, вместо синего Bootstrap */
+.rhumbsFilterInput:focus {
+  border-color: var(--rhumbs-red);
+  box-shadow: 0 0 0 .25rem rgba(208, 2, 27, .25);
+}

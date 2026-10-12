@@ -1,0 +1,8 @@
+/* Мобильный макет: колонка 390 px по центру окна, снизу — место под закреплённую панель */
+.rhumbsLayout {
+  max-width: 390px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-bottom: var(--rhumbs-navbar-height);
+  background: var(--rhumbs-white);
+}

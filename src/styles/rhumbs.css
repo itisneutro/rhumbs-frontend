@@ -1,0 +1,38 @@
+/* Цвета темы: красная панель навигации и кнопки с белым текстом, белый фон,
+   тёмно-серый текст, белые карточки со светло-серой обводкой */
+:root {
+  --rhumbs-red: #D0021B;        /* панель навигации, кнопки */
+  --rhumbs-red-dark: #A50216;   /* кнопка при наведении и нажатии */
+  --rhumbs-white: #FFFFFF;      /* фон страниц и карточек, текст на красном */
+  --rhumbs-dark-gray: #333333;  /* текст */
+  --rhumbs-light-gray: #DDDDDD; /* обводка карточек и полей, фон вокруг колонки */
+  --rhumbs-navbar-height: 64px; /* высота нижней панели */
+
+  /* те же цвета для компонентов React-Bootstrap */
+  --bs-body-color: var(--rhumbs-dark-gray);
+  --bs-body-bg: var(--rhumbs-white);
+  --bs-border-color: var(--rhumbs-light-gray);
+}
+
+body {
+  background: var(--rhumbs-light-gray);
+}
+
+/* Красная слегка скруглённая кнопка с белым текстом (Button из React-Bootstrap) */
+.rhumbsButton {
+  --bs-btn-color: var(--rhumbs-white);
+  --bs-btn-bg: var(--rhumbs-red);
+  --bs-btn-border-color: var(--rhumbs-red);
+  --bs-btn-hover-color: var(--rhumbs-white);
+  --bs-btn-hover-bg: var(--rhumbs-red-dark);
+  --bs-btn-hover-border-color: var(--rhumbs-red-dark);
+  --bs-btn-active-color: var(--rhumbs-white);
+  --bs-btn-active-bg: var(--rhumbs-red-dark);
+  --bs-btn-active-border-color: var(--rhumbs-red-dark);
+  --bs-btn-disabled-color: var(--rhumbs-white);
+  --bs-btn-disabled-bg: var(--rhumbs-red);
+  --bs-btn-disabled-border-color: var(--rhumbs-red);
+  --bs-btn-focus-shadow-rgb: 208, 2, 27;
+  --bs-btn-border-radius: 6px;
+  --bs-btn-font-weight: 700;
+}

@@ -1,0 +1,54 @@
+/* Нижняя панель: закреплена внизу окна, ширина — как у колонки макета */
+.rhumbsNavbar {
+  --bs-nav-link-padding-x: 0;
+  --bs-nav-link-padding-y: 0;
+  --bs-nav-link-color: var(--rhumbs-white);
+  --bs-nav-link-hover-color: var(--rhumbs-white);
+  --bs-nav-link-disabled-color: var(--rhumbs-white);
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: 10;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 390px;
+  height: var(--rhumbs-navbar-height);
+  transform: translateX(-50%);
+  background: var(--rhumbs-red);
+}
+
+.rhumbsNavbarLink {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.rhumbsNavbarLink:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--rhumbs-white);
+}
+
+/* Добавление и Вход видны, но не нажимаются */
+.rhumbsNavbarLink.disabled {
+  opacity: .5;
+}
+
+.rhumbsNavbarIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.rhumbsNavbarLabel {
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+/* Пункт текущей страницы: полужирная подпись с белой чертой */
+.rhumbsNavbarLink.active .rhumbsNavbarLabel {
+  border-bottom-color: var(--rhumbs-white);
+  font-weight: 700;
+}

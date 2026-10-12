@@ -1,0 +1,62 @@
+/* Белая карточка со светло-серой обводкой */
+.rhumbsTile {
+  --bs-card-bg: var(--rhumbs-white);
+  --bs-card-border-color: var(--rhumbs-light-gray);
+  --bs-card-spacer-x: 10px;
+  --bs-card-spacer-y: 10px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.rhumbsTileImage {
+  height: 140px;
+  object-fit: cover;
+}
+
+.rhumbsTileBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rhumbsTileName {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.rhumbsTileInfo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.rhumbsTileLikes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+
+.rhumbsTileHeart {
+  width: 18px;
+  height: 18px;
+  fill: var(--rhumbs-red);
+}
+
+.rhumbsTileAzimuth {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.rhumbsTileAzimuthLabel {
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.rhumbsTileAzimuthValue {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 20px;
+}

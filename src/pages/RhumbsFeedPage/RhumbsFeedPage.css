@@ -1,0 +1,132 @@
+/* Экран ленты: видео на всю высоту над нижней панелью, надписи поверх */
+.rhumbsFeedPage {
+  position: relative;
+  height: calc(100vh - var(--rhumbs-navbar-height));
+  overflow: hidden;
+  background: var(--rhumbs-dark-gray);
+  color: var(--rhumbs-white);
+}
+
+.rhumbsFeedVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Затемнение снизу, чтобы белые надписи читались на светлом видео */
+.rhumbsFeedPage::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 50%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .6));
+  pointer-events: none;
+}
+
+.rhumbsFeedInfo,
+.rhumbsFeedRail {
+  position: absolute;
+  bottom: 16px;
+  z-index: 1;
+  text-shadow: 0 0 3px rgba(0, 0, 0, .55), 0 1px 8px rgba(0, 0, 0, .4);
+}
+
+/* Название и описание — внизу слева, не заходят под правый столбец */
+.rhumbsFeedInfo {
+  right: 132px;
+  left: 16px;
+}
+
+.rhumbsFeedName {
+  margin: 0 0 4px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.rhumbsFeedDescription {
+  margin: 0;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+/* «Ещё» / «Свернуть» — белая полужирная надпись */
+.rhumbsFeedMore {
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+  --bs-btn-border-width: 0;
+  --bs-btn-font-size: 14px;
+  --bs-btn-font-weight: 700;
+  --bs-btn-color: var(--rhumbs-white);
+  --bs-btn-hover-color: var(--rhumbs-white);
+  --bs-btn-active-color: var(--rhumbs-white);
+  margin-top: 4px;
+  text-decoration: none;
+}
+
+/* Азимуты, лайк и «Следующий» — столбиком справа */
+.rhumbsFeedRail {
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 104px;
+}
+
+.rhumbsFeedAzimuth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rhumbsFeedAzimuthValue {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.rhumbsFeedAzimuthLabel {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+/* Лайк гостя: неактивная кнопка, белая иконка и число */
+.rhumbsFeedLike {
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+  --bs-btn-border-width: 0;
+  --bs-btn-font-size: 20px;
+  --bs-btn-font-weight: 700;
+  --bs-btn-disabled-color: var(--rhumbs-white);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.rhumbsFeedHeart {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--rhumbs-white);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, .55));
+}
+
+.rhumbsFeedHeartLiked {
+  fill: var(--rhumbs-white);
+}
+
+/* Румба с таким id нет */
+.rhumbsFeedMissing {
+  margin: 0;
+  padding: 24px 16px;
+  font-size: 20px;
+  font-weight: 700;
+}

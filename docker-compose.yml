@@ -1,0 +1,12 @@
+services:
+  rhumbs-frontend:
+    container_name: rhumbs-frontend
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 5173:5173
+    command: npm run dev
