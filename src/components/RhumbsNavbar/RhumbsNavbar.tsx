@@ -5,23 +5,23 @@ import type { RhumbsResponse } from '../../modules/rhumbsTypes'
 import { RHUMBS_ROUTE_LABELS, RHUMBS_ROUTES } from '../../RhumbsRoutes'
 import './RhumbsNavbar.css'
 
-// Иконки пунктов: Лента, Добавление, Плитка — как в ЛР-1, Вход — значок входа Lucide
+// Иконки пунктов: Лента, Добавление, Плитка — из ЛР-2; Вход — log-in из Lucide, лицензия ISC
 const RHUMBS_FEED_ICON = (
-  <svg className="rhumbsNavbarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
+  <svg className="rhumbs-tab-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
     <rect x="3" y="4" width="18" height="16" rx="2" />
     <path d="M10 8.5v7l5.5-3.5Z" />
   </svg>
 )
 
 const RHUMBS_DRAFT_ICON = (
-  <svg className="rhumbsNavbarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
+  <svg className="rhumbs-tab-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
     <circle cx="12" cy="12" r="9" />
     <path d="M12 8v8M8 12h8" />
   </svg>
 )
 
 const RHUMBS_TILES_ICON = (
-  <svg className="rhumbsNavbarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
+  <svg className="rhumbs-tab-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
     <rect x="4" y="4" width="6.5" height="6.5" rx="1" />
     <rect x="13.5" y="4" width="6.5" height="6.5" rx="1" />
     <rect x="4" y="13.5" width="6.5" height="6.5" rx="1" />
@@ -30,7 +30,7 @@ const RHUMBS_TILES_ICON = (
 )
 
 const RHUMBS_LOGIN_ICON = (
-  <svg className="rhumbsNavbarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg className="rhumbs-tab-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
     <path d="m10 17 5-5-5-5" />
     <path d="M15 12H3" />
@@ -64,17 +64,17 @@ export const RhumbsNavbar: FC<RhumbsNavbarProps> = ({ rhumbsList }) => {
   ]
 
   return (
-    <Nav as="nav" className="rhumbsNavbar">
+    <Nav as="nav" className="rhumbs-tab-bar">
       {rhumbsNavbarLinks.map(({ label, icon, to, active }) =>
         to === undefined ? (
-          <Nav.Link key={label} className="rhumbsNavbarLink" disabled>
+          <Nav.Link key={label} className="rhumbs-tab-bar__tab" disabled>
             {icon}
-            <span className="rhumbsNavbarLabel">{label}</span>
+            <span className="rhumbs-tab-bar__label">{label}</span>
           </Nav.Link>
         ) : (
-          <Nav.Link key={label} className="rhumbsNavbarLink" as={Link} to={to} active={active}>
+          <Nav.Link key={label} className="rhumbs-tab-bar__tab" as={Link} to={to} active={active}>
             {icon}
-            <span className="rhumbsNavbarLabel">{label}</span>
+            <span className="rhumbs-tab-bar__label">{label}</span>
           </Nav.Link>
         ),
       )}

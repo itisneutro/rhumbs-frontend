@@ -1,22 +1,74 @@
-/* Поле и кнопка в одну строку, кнопка — на уровне поля */
-.rhumbsFilter {
+.rhumbs-tiles__filter {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  flex-shrink: 0;
   gap: 8px;
-  margin-bottom: 16px;
+  margin: 0 0 14px 0;
+  padding: 12px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  box-shadow: 0 8px 24px rgba(18, 18, 18, .12);
 }
 
-.rhumbsFilterGroup {
-  flex: 1;
-}
-
-.rhumbsFilterLabel {
-  margin-bottom: 4px;
+.rhumbs-tiles__filter-label {
+  margin: 0;
   font-size: 13px;
+  line-height: 18px;
+  color: var(--rhumbs-ink);
 }
 
-/* Фокус поля — красный, как кнопка, вместо синего Bootstrap */
-.rhumbsFilterInput:focus {
-  border-color: var(--rhumbs-red);
-  box-shadow: 0 0 0 .25rem rgba(208, 2, 27, .25);
+input[type="range"].rhumbs-tiles__filter-range {
+  width: 129px;
+  height: 22px;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"].rhumbs-tiles__filter-range:focus {
+  outline: none;
+}
+
+input[type="range"].rhumbs-tiles__filter-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rhumbs-border);
+}
+
+input[type="range"].rhumbs-tiles__filter-range::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rhumbs-border);
+}
+
+input[type="range"].rhumbs-tiles__filter-range::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border: none;
+  border-radius: 9px;
+  background: var(--rhumbs-accent);
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"].rhumbs-tiles__filter-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 9px;
+  background: var(--rhumbs-accent);
+  box-shadow: none;
+}
+
+.rhumbs-tiles__filter-degrees {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.rhumbs-tiles__filter-button {
+  flex-shrink: 0;
+  margin-left: auto;
 }

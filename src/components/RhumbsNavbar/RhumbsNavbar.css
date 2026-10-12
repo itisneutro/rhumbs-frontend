@@ -1,54 +1,60 @@
-/* Нижняя панель: закреплена внизу окна, ширина — как у колонки макета */
-.rhumbsNavbar {
+.rhumbs-tab-bar {
   --bs-nav-link-padding-x: 0;
   --bs-nav-link-padding-y: 0;
-  --bs-nav-link-color: var(--rhumbs-white);
-  --bs-nav-link-hover-color: var(--rhumbs-white);
-  --bs-nav-link-disabled-color: var(--rhumbs-white);
-  position: fixed;
+  --bs-nav-link-color: var(--rhumbs-ink);
+  --bs-nav-link-hover-color: var(--rhumbs-ink);
+  --bs-nav-link-disabled-color: var(--rhumbs-ink);
+  position: sticky;
   bottom: 0;
-  left: 50%;
-  z-index: 10;
+  display: flex;
+  flex-shrink: 0;
   flex-wrap: nowrap;
-  width: 100%;
-  max-width: 390px;
-  height: var(--rhumbs-navbar-height);
-  transform: translateX(-50%);
-  background: var(--rhumbs-red);
+  width: 390px;
+  height: 64px;
+  margin: auto -16px 0 -16px;
+  background: var(--rhumbs-bg);
+  box-shadow: 0 -4px 16px rgba(18, 18, 18, .08);
 }
 
-.rhumbsNavbarLink {
+.rhumbs-tab-bar__tab {
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
+  height: 64px;
+  color: var(--rhumbs-ink);
+  text-decoration: none;
 }
 
-.rhumbsNavbarLink:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--rhumbs-white);
+.rhumbs-tab-bar__tab:focus-visible {
+  box-shadow: none;
+  outline: revert;
 }
 
-/* Добавление и Вход видны, но не нажимаются */
-.rhumbsNavbarLink.disabled {
+.rhumbs-tab-bar__tab.disabled {
   opacity: .5;
 }
 
-.rhumbsNavbarIcon {
+.rhumbs-tab-bar__icon {
+  display: block;
   width: 24px;
   height: 24px;
 }
 
-.rhumbsNavbarLabel {
+.rhumbs-tab-bar__label {
   padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
-  font-size: 12px;
+  border-bottom: 3px solid transparent;
+  font-size: 11px;
   line-height: 14px;
 }
 
-/* Пункт текущей страницы: полужирная подпись с белой чертой */
-.rhumbsNavbarLink.active .rhumbsNavbarLabel {
-  border-bottom-color: var(--rhumbs-white);
+.rhumbs-tab-bar__tab.active .rhumbs-tab-bar__icon {
+  color: var(--rhumbs-accent);
+}
+
+.rhumbs-tab-bar__tab.active .rhumbs-tab-bar__label {
+  border-bottom-color: var(--rhumbs-ink);
   font-weight: 700;
 }

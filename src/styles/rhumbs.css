@@ -1,38 +1,95 @@
-/* Цвета темы: красная панель навигации и кнопки с белым текстом, белый фон,
-   тёмно-серый текст, белые карточки со светло-серой обводкой */
 :root {
-  --rhumbs-red: #D0021B;        /* панель навигации, кнопки */
-  --rhumbs-red-dark: #A50216;   /* кнопка при наведении и нажатии */
-  --rhumbs-white: #FFFFFF;      /* фон страниц и карточек, текст на красном */
-  --rhumbs-dark-gray: #333333;  /* текст */
-  --rhumbs-light-gray: #DDDDDD; /* обводка карточек и полей, фон вокруг колонки */
-  --rhumbs-navbar-height: 64px; /* высота нижней панели */
+  --rhumbs-accent: #BF2828;  /* windfinder --wf-accent-700: логотип, заголовки, красные кнопки, активная дата */
+  --rhumbs-ink: #121212;     /* --wf-text-primary: текст, полоса под активным пунктом хедера */
+  --rhumbs-bg: #FFFFFF;      /* --wf-bg-primary: фон страниц и хедера, белые круглые кнопки на карточках */
+  --rhumbs-border: #CCCCCC;  /* рамка полей ввода и карточек */
+  --rhumbs-surface: #F2F2F2; /* вспомогательный фон */
+  --rhumbs-muted: #656565;   /* вторичный текст, подписи */
+  --rhumbs-overlay: rgba(18, 18, 18, .6); /* подложка подписи поверх изображения на карточке */
+}
 
-  /* те же цвета для компонентов React-Bootstrap */
-  --bs-body-color: var(--rhumbs-dark-gray);
-  --bs-body-bg: var(--rhumbs-white);
-  --bs-border-color: var(--rhumbs-light-gray);
+/* Roboto Condensed, вариативный, лицензия SIL OFL 1.1 — public/fonts/OFL.txt */
+@font-face {
+  font-family: "Rhumbs Condensed";
+  src: url("/fonts/RobotoCondensed-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--rhumbs-light-gray);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  background: #E6E6E6;
+  color: var(--rhumbs-ink);
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 22px;
 }
 
-/* Красная слегка скруглённая кнопка с белым текстом (Button из React-Bootstrap) */
-.rhumbsButton {
-  --bs-btn-color: var(--rhumbs-white);
-  --bs-btn-bg: var(--rhumbs-red);
-  --bs-btn-border-color: var(--rhumbs-red);
-  --bs-btn-hover-color: var(--rhumbs-white);
-  --bs-btn-hover-bg: var(--rhumbs-red-dark);
-  --bs-btn-hover-border-color: var(--rhumbs-red-dark);
-  --bs-btn-active-color: var(--rhumbs-white);
-  --bs-btn-active-bg: var(--rhumbs-red-dark);
-  --bs-btn-active-border-color: var(--rhumbs-red-dark);
-  --bs-btn-disabled-color: var(--rhumbs-white);
-  --bs-btn-disabled-bg: var(--rhumbs-red);
-  --bs-btn-disabled-border-color: var(--rhumbs-red);
-  --bs-btn-focus-shadow-rgb: 208, 2, 27;
-  --bs-btn-border-radius: 6px;
-  --bs-btn-font-weight: 700;
+.rhumbs-tiles__title,
+.rhumbs-missing__title,
+.rhumbs-feed__name,
+.rhumbs-tiles__name,
+.rhumbs-feed__azimuth-degrees,
+.rhumbs-feed__azimuth-label,
+.rhumbs-tiles__azimuth-degrees,
+.rhumbs-tiles__azimuth-label,
+.rhumbs-tiles__filter-degrees,
+.rhumbs-feed__likes-count,
+.rhumbs-tiles__likes-count,
+.rhumbs-tab-bar__label,
+.rhumbs-button {
+  font-family: "Rhumbs Condensed", "Arial Narrow", sans-serif;
+}
+
+.rhumbs-feed__azimuth-degrees,
+.rhumbs-tiles__azimuth-degrees,
+.rhumbs-tiles__filter-degrees {
+  font-variant-numeric: tabular-nums;
+}
+
+.rhumbs-button {
+  --bs-btn-hover-color: #FFFFFF;
+  --bs-btn-hover-bg: var(--rhumbs-accent);
+  --bs-btn-active-color: #FFFFFF;
+  --bs-btn-active-bg: var(--rhumbs-accent);
+  --bs-btn-disabled-color: #FFFFFF;
+  --bs-btn-disabled-bg: var(--rhumbs-accent);
+  --bs-btn-focus-shadow-rgb: 191, 40, 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  margin: 0;
+  padding: 0 20px;
+  border: none;
+  border-radius: 22px;
+  background: var(--rhumbs-accent);
+  color: #FFFFFF;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.rhumbs-button--small {
+  height: 34px;
+  padding: 0 14px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.rhumbs-button--icon {
+  width: 44px;
+  padding: 0;
 }

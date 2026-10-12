@@ -8,30 +8,29 @@ type RhumbsFilterProps = {
   onSubmit: () => void
 }
 
-// Фильтр по минимальному географическому азимуту; пустое поле — все румбы
+// Фильтр по минимальному географическому азимуту
 export const RhumbsFilter: FC<RhumbsFilterProps> = ({ value, setValue, onSubmit }) => (
   <Form
-    className="rhumbsFilter"
+    className="rhumbs-tiles__filter"
     onSubmit={(event) => {
       event.preventDefault()
       onSubmit()
     }}
   >
-    <Form.Group className="rhumbsFilterGroup" controlId="rhumbsMinAzimuth">
-      <Form.Label className="rhumbsFilterLabel">Мин. азимут, °</Form.Label>
-      <Form.Control
-        className="rhumbsFilterInput"
-        type="number"
-        min={0}
-        max={359}
-        step={1}
-        value={value ?? ''}
-        onChange={(event) =>
-          setValue(event.target.value === '' ? undefined : Number(event.target.value))
-        }
-      />
-    </Form.Group>
-    <Button type="submit" className="rhumbsButton">
+    <Form.Label className="rhumbs-tiles__filter-label" htmlFor="rhumbsMinAzimuth">
+      Азимут от
+    </Form.Label>
+    <Form.Range
+      className="rhumbs-tiles__filter-range"
+      id="rhumbsMinAzimuth"
+      min={0}
+      max={315}
+      step={45}
+      value={value ?? 0}
+      onChange={(event) => setValue(Number(event.target.value))}
+    />
+    <span className="rhumbs-tiles__filter-degrees">{value ?? 0}°</span>
+    <Button type="submit" className="rhumbs-button rhumbs-button--small rhumbs-tiles__filter-button">
       Найти
     </Button>
   </Form>

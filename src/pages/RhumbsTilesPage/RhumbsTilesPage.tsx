@@ -16,16 +16,17 @@ export const RhumbsTilesPage: FC = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="rhumbsTilesPage">
+    <>
+      <h1 className="rhumbs-tiles__title">Румбы ветра</h1>
       <RhumbsFilter
         value={minAzimuth}
         setValue={setMinAzimuth}
         onSubmit={() => setRhumbsList(getRhumbsList(minAzimuth))}
       />
       {rhumbsList.length === 0 ? (
-        <p className="rhumbsTilesEmpty">Румбов не найдено</p>
+        <p className="rhumbs-tiles__empty">Румбы с таким азимутом не найдены</p>
       ) : (
-        <Row className="g-3">
+        <Row className="rhumbs-tiles__grid">
           {rhumbsList.map((rhumbs) => (
             <Col xs={6} key={rhumbs.id}>
               <RhumbsTile
@@ -33,12 +34,13 @@ export const RhumbsTilesPage: FC = () => {
                 imageUrl={rhumbs.imageUrl}
                 likesCount={rhumbs.likesCount}
                 geoAzimuth={rhumbs.geoAzimuth}
+                magAzimuth={rhumbs.magAzimuth}
                 onClick={() => navigate(`${RHUMBS_ROUTES.RHUMBS_FEED}/${rhumbs.id}`)}
               />
             </Col>
           ))}
         </Row>
       )}
-    </div>
+    </>
   )
 }
