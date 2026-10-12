@@ -863,3 +863,18 @@ input[type="range"].rhumbs-tiles__filter-range {
 .rhumbs-feed__heart--liked path {
   fill: var(--rhumbs-accent);
 }
+
+.rhumbs-rose__ray,
+.rhumbs-rose__needle {
+  transform: none;
+  animation: none;
+}
+
+.rhumbs-screen {
+  height: 100vh;
+  height: 100dvh;
+}
+
+.rhumbs-feed__video {
+  height: calc(100% - 64px);
+}

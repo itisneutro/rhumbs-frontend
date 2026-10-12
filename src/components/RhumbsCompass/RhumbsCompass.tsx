@@ -1,4 +1,4 @@
-import type { CSSProperties, FC } from 'react'
+import type { FC } from 'react'
 
 type RhumbsCompassProps = {
   className: string
@@ -11,13 +11,8 @@ export const RhumbsCompass: FC<RhumbsCompassProps> = ({ className, geoAzimuth, m
     return null
   }
 
-  const rhumbsCompassAngles = {
-    '--rhumbs-geo': `${geoAzimuth}deg`,
-    '--rhumbs-mag': `${magAzimuth}deg`,
-  } as CSSProperties
-
   return (
-    <div className={`rhumbs-rose ${className}`} style={rhumbsCompassAngles}>
+    <div className={`rhumbs-rose ${className}`}>
       <svg className="rhumbs-rose__star" viewBox="0 0 100 100" aria-hidden="true">
         <circle className="rhumbs-rose__ring" cx="50" cy="50" r="47" strokeWidth="1" vectorEffect="non-scaling-stroke" />
         <polygon className="rhumbs-rose__half rhumbs-rose__half--hollow" points="56.36,43.64 54.77,35.23 69.09,30.91" strokeWidth="1" vectorEffect="non-scaling-stroke" />
@@ -36,10 +31,14 @@ export const RhumbsCompass: FC<RhumbsCompassProps> = ({ className, geoAzimuth, m
         <polygon className="rhumbs-rose__half rhumbs-rose__half--filled" points="50,50 50,90 43.64,56.36" />
         <polygon className="rhumbs-rose__half rhumbs-rose__half--hollow" points="50,50 43.64,56.36 10,50" strokeWidth="1" vectorEffect="non-scaling-stroke" />
         <polygon className="rhumbs-rose__half rhumbs-rose__half--filled" points="50,50 10,50 43.64,43.64" />
-        <polygon className="rhumbs-rose__ray" points="50,50 43.64,43.64 50,10 56.36,43.64" />
-        <g className="rhumbs-rose__needle">
-          <line x1="50" y1="50" x2="50" y2="11" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" />
-          <polygon points="50,5 47.8,11 52.2,11" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        <g transform={`rotate(${geoAzimuth} 50 50)`}>
+          <polygon className="rhumbs-rose__ray" points="50,50 43.64,43.64 50,10 56.36,43.64" />
+        </g>
+        <g transform={`rotate(${magAzimuth} 50 50)`}>
+          <g className="rhumbs-rose__needle">
+            <line x1="50" y1="50" x2="50" y2="11" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+            <polygon points="50,5 47.8,11 52.2,11" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          </g>
         </g>
         <circle className="rhumbs-rose__hub" cx="50" cy="50" r="3.5" />
       </svg>
