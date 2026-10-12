@@ -5,7 +5,6 @@ import type { RhumbsOutletData } from '../../RhumbsLayout'
 import { RhumbsCompass } from '../../components/RhumbsCompass/RhumbsCompass'
 import { getRhumbsById } from '../../modules/rhumbsData'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
-import './RhumbsFeedPage.css'
 
 // Заглушка из public: показывается, если videoUrl = null или видео не загрузилось
 const RHUMBS_DEFAULT_VIDEO = '/rhumbs-default.mp4'
@@ -35,6 +34,7 @@ export const RhumbsFeedPage: FC = () => {
   // Следующий — по порядку в текущем списке, после последнего — первый
   const nextRhumbs =
     rhumbsList.length > 0 ? rhumbsList[(rhumbsIndex + 1) % rhumbsList.length] : undefined
+  const nextRhumbsPath = nextRhumbs ? `${RHUMBS_ROUTES.RHUMBS_FEED}/${nextRhumbs.id}` : undefined
 
   return (
     <>
@@ -54,17 +54,22 @@ export const RhumbsFeedPage: FC = () => {
 
       <div className="rhumbs-feed__rail">
         <div className="rhumbs-feed__gauge">
-          <RhumbsCompass key={rhumbs.id} geoAzimuth={rhumbs.geoAzimuth} magAzimuth={rhumbs.magAzimuth} />
+          <RhumbsCompass
+            key={rhumbs.id}
+            className="rhumbs-rose--feed rhumbs-rose--dark"
+            geoAzimuth={rhumbs.geoAzimuth}
+            magAzimuth={rhumbs.magAzimuth}
+          />
           <div className="rhumbs-feed__azimuth">
-            <span className="rhumbs-feed__azimuth-degrees">{rhumbs.geoAzimuth}°</span>
+            <span className="rhumbs-feed__azimuth-value">{`${rhumbs.geoAzimuth}°`}</span>
             <span className="rhumbs-feed__azimuth-label">Географический</span>
           </div>
           <div className="rhumbs-feed__azimuth">
-            <span className="rhumbs-feed__azimuth-degrees">{rhumbs.magAzimuth}°</span>
+            <span className="rhumbs-feed__azimuth-value">{`${rhumbs.magAzimuth}°`}</span>
             <span className="rhumbs-feed__azimuth-label">Магнитный</span>
           </div>
           {/* У гостя лайк неактивен; иконка красная, если isLiked = 1 */}
-          <Button variant="link" className="rhumbs-feed__likes" disabled>
+          <Button as="div" bsPrefix="rhumbs-feed__likes" variant="" disabled>
             <svg
               className={rhumbs.isLiked === 1 ? 'rhumbs-feed__heart rhumbs-feed__heart--liked' : 'rhumbs-feed__heart'}
               viewBox="0 0 24 24"
@@ -78,12 +83,16 @@ export const RhumbsFeedPage: FC = () => {
           </Button>
         </div>
         <Button
-          className="rhumbs-button rhumbs-button--icon rhumbs-feed__next"
+          as="a"
+          bsPrefix="rhumbs-feed__next"
+          variant=""
+          href={nextRhumbsPath}
           aria-label="Следующий"
           disabled={nextRhumbs === undefined}
-          onClick={() => {
-            if (nextRhumbs) {
-              navigate(`${RHUMBS_ROUTES.RHUMBS_FEED}/${nextRhumbs.id}`)
+          onClick={(event) => {
+            event.preventDefault()
+            if (nextRhumbsPath) {
+              navigate(nextRhumbsPath)
             }
           }}
         >

@@ -34,7 +34,8 @@ docker compose down       # остановить и удалить контей�
 4. Изображение по умолчанию — в плитке карточка «Северо-восточный» (id 2,
    `imageUrl: null`) показывает `public/rhumbs-default.jpg`. Код —
    `src/components/RhumbsTile/RhumbsTile.tsx`: `RHUMBS_DEFAULT_IMAGE`, проверка
-   `imageUrl !== null` и `onError` у `Card.Img`.
+   `imageUrl !== null` и `onError` у скрытого `img`; картинка — фон блока `Card.Img`,
+   как в партиале rhumbs-image ЛР-2.
 5. Видео по умолчанию — http://localhost:5173/rhumbs/feed/2 (`videoUrl: null`)
    играет `public/rhumbs-default.mp4`. Код —
    `src/pages/RhumbsFeedPage/RhumbsFeedPage.tsx`: `RHUMBS_DEFAULT_VIDEO`,
@@ -147,28 +148,21 @@ src/
   main.tsx                               точка входа: CSS Bootstrap и темы, рендер RhumbsApp
   RhumbsApp.tsx                          BrowserRouter и маршруты
   RhumbsRoutes.ts                        RHUMBS_ROUTES, тип RhumbsRouteKey, подписи пунктов панели
-  RhumbsLayout.tsx                       оболочка: rhumbsList и minAzimuth, Outlet, нижняя панель
-  RhumbsLayout.css                       экран 390×844 px по центру окна
+  RhumbsLayout.tsx                       оболочка main.rhumbs-screen: rhumbsList и minAzimuth, Outlet, панель
   components/
     RhumbsNavbar/RhumbsNavbar.tsx        нижняя панель из 4 пунктов
-    RhumbsNavbar/RhumbsNavbar.css        белая панель вкладок, закреплённая внизу
     RhumbsFilter/RhumbsFilter.tsx        слайдер «Азимут от» и кнопка «Найти»
-    RhumbsFilter/RhumbsFilter.css        белая панель фильтра, слайдер
     RhumbsTile/RhumbsTile.tsx            карточка плитки с заглушкой изображения
-    RhumbsTile/RhumbsTile.css            фото с подложкой названия, роза, азимуты, лайки
-    RhumbsCompass/RhumbsCompass.tsx      роза румбов (SVG из ЛР-2), props geoAzimuth и magAzimuth
-    RhumbsCompass/RhumbsCompass.css      луч, стрелка и их поворот
+    RhumbsCompass/RhumbsCompass.tsx      роза румбов (SVG из ЛР-2), props className, geoAzimuth, magAzimuth
   pages/
     RhumbsTilesPage/RhumbsTilesPage.tsx  плитка: заголовок, фильтр и карточки в 2 столбца
-    RhumbsTilesPage/RhumbsTilesPage.css  заголовок, сетка, текст «Румбы с таким азимутом не найдены»
     RhumbsFeedPage/RhumbsFeedPage.tsx    лента: видео, надписи и кнопки поверх
-    RhumbsFeedPage/RhumbsFeedPage.css    видео во весь экран, расположение надписей
   modules/
     rhumbsTypes.ts                       тип RhumbsResponse (10 полей API)
     rhumbsMock.ts                        RHUMBS_MOCK — 6 румбов из seed.sql
     rhumbsData.ts                        getRhumbsList и getRhumbsById по mock
   styles/
-    rhumbs.css                           палитра ЛР-2, шрифт Roboto Condensed, кнопка .rhumbs-button
+    rhumbs.css                           весь CSS: rhumbs.css ЛР-2 байт в байт и блок добавок ЛР-5 в конце
 ```
 
 ## Хуки

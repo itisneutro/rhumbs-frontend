@@ -1,12 +1,12 @@
 import type { CSSProperties, FC } from 'react'
-import './RhumbsCompass.css'
 
 type RhumbsCompassProps = {
+  className: string
   geoAzimuth: number | null
   magAzimuth: number | null
 }
 
-export const RhumbsCompass: FC<RhumbsCompassProps> = ({ geoAzimuth, magAzimuth }) => {
+export const RhumbsCompass: FC<RhumbsCompassProps> = ({ className, geoAzimuth, magAzimuth }) => {
   if (geoAzimuth === null || magAzimuth === null) {
     return null
   }
@@ -17,7 +17,7 @@ export const RhumbsCompass: FC<RhumbsCompassProps> = ({ geoAzimuth, magAzimuth }
   } as CSSProperties
 
   return (
-    <div className="rhumbs-rose rhumbs-rose--dark" style={rhumbsCompassAngles}>
+    <div className={`rhumbs-rose ${className}`} style={rhumbsCompassAngles}>
       <svg className="rhumbs-rose__star" viewBox="0 0 100 100" aria-hidden="true">
         <circle className="rhumbs-rose__ring" cx="50" cy="50" r="47" strokeWidth="1" vectorEffect="non-scaling-stroke" />
         <polygon className="rhumbs-rose__half rhumbs-rose__half--hollow" points="56.36,43.64 54.77,35.23 69.09,30.91" strokeWidth="1" vectorEffect="non-scaling-stroke" />

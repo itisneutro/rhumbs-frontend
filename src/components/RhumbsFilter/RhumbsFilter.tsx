@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import './RhumbsFilter.css'
 
 type RhumbsFilterProps = {
   value: number | undefined
@@ -17,11 +16,11 @@ export const RhumbsFilter: FC<RhumbsFilterProps> = ({ value, setValue, onSubmit 
       onSubmit()
     }}
   >
-    <Form.Label className="rhumbs-tiles__filter-label" htmlFor="rhumbsMinAzimuth">
+    <Form.Label bsPrefix="rhumbs-tiles__filter-label" htmlFor="rhumbsMinAzimuth">
       Азимут от
     </Form.Label>
     <Form.Range
-      className="rhumbs-tiles__filter-range"
+      bsPrefix="rhumbs-tiles__filter-range"
       id="rhumbsMinAzimuth"
       min={0}
       max={315}
@@ -29,8 +28,13 @@ export const RhumbsFilter: FC<RhumbsFilterProps> = ({ value, setValue, onSubmit 
       value={value ?? 0}
       onChange={(event) => setValue(Number(event.target.value))}
     />
-    <span className="rhumbs-tiles__filter-degrees">{value ?? 0}°</span>
-    <Button type="submit" className="rhumbs-button rhumbs-button--small rhumbs-tiles__filter-button">
+    <span className="rhumbs-tiles__filter-value">{`${value ?? 0}°`}</span>
+    <Button
+      type="submit"
+      bsPrefix="rhumbs-button"
+      variant=""
+      className="rhumbs-button--small rhumbs-tiles__filter-button"
+    >
       Найти
     </Button>
   </Form>

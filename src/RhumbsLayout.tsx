@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom'
 import { RhumbsNavbar } from './components/RhumbsNavbar/RhumbsNavbar'
 import { getRhumbsList } from './modules/rhumbsData'
 import type { RhumbsResponse } from './modules/rhumbsTypes'
-import './RhumbsLayout.css'
 
 // Общие данные страниц: передаются в <Outlet context> и читаются страницами через useOutletContext
 export type RhumbsOutletData = {
