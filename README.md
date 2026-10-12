@@ -46,7 +46,7 @@ docker compose down       # остановить и удалить контей�
 7. Передаваемые props — `src/pages/RhumbsTilesPage/RhumbsTilesPage.tsx`:
    `RhumbsFilter` получает `value={minAzimuth}`, `setValue={setMinAzimuth}` и
    `onSubmit`, `RhumbsTile` — `name`, `imageUrl`, `likesCount`, `geoAzimuth`,
-   `magAzimuth`, `onClick`; `RhumbsNavbar` в `src/RhumbsLayout.tsx` — `rhumbsList`.
+   `magAzimuth`, `onClick`.
 8. Хуки состояния `useState` — `src/RhumbsLayout.tsx`, `RhumbsTile.tsx`,
    `RhumbsFeedPage.tsx` (таблица в разделе «Хуки»).
 9. Хуки роутера `useOutletContext`, `useNavigate`, `useParams`, `useLocation` —
@@ -89,16 +89,17 @@ docker compose down       # остановить и удалить контей�
 | «Ещё» / «Свернуть» | раскрывает и сворачивает описание (`details` / `summary`); у следующего румба описание снова свёрнуто | — |
 | Роза румбов и азимуты | справа столбиком: роза (красный луч — географический азимут, стрелка — магнитный), географический и магнитный азимуты в градусах | — |
 | Лайк с числом лайков | белое сердце и `likesCount`; при `isLiked = 1` сердце красное | у гостя всегда |
-| Круглая кнопка со стрелкой («Следующий») | следующий румб по порядку в текущем списке плитки, после последнего — первый | если текущий список пуст |
+| Круглая кнопка со стрелкой («Следующий») | следующий румб по возрастанию id среди всех опубликованных, после последнего — первый | — |
 | Текст «Румб не найден» | показывается вместо ленты, если румба с таким id нет (например, `/rhumbs/feed/6`) | — |
 
-Румб берётся из текущего списка плитки, а если его там нет — из mock по id.
+Лента идёт по всем опубликованным румбам из mock, как `GET /api/rhumbs/feed[/:id]?next=true`
+бэкенда: фильтр плитки на неё не влияет.
 
 ### Нижняя панель
 
 | Пункт | Что делает | Когда неактивен |
 |---|---|---|
-| Лента | открывает первый румб текущего списка плитки | если список пуст |
+| Лента | открывает первый по id опубликованный румб, фильтр плитки не влияет | — |
 | Добавление | — | всегда: в ЛР-5 этой страницы нет |
 | Плитка | открывает плитку | — |
 | Вход | — | всегда: в ЛР-5 этой страницы нет |
@@ -133,7 +134,8 @@ Mock — `RHUMBS_MOCK` в `src/modules/rhumbsMock.ts`: 6 опубликован�
 `http://localhost:9000/rhumbs/<ключ>` на Minio бэкенда.
 
 Функции `getRhumbsList(minAzimuth?)` (фильтр `geoAzimuth >= minAzimuth`, без
-значения — все) и `getRhumbsById(id)` в `src/modules/rhumbsData.ts` работают с
+значения — все), `getRhumbsById(id)` и `getNextRhumbs(id?)` (следующий по возрастанию
+id, после последнего и без `id` — первый) в `src/modules/rhumbsData.ts` работают с
 mock; в ЛР-6 они заменятся запросами к API.
 
 Заглушки — `public/rhumbs-default.jpg` и `public/rhumbs-default.mp4`. Подставляются,
@@ -160,7 +162,7 @@ src/
   modules/
     rhumbsTypes.ts                       тип RhumbsResponse (10 полей API)
     rhumbsMock.ts                        RHUMBS_MOCK — 6 румбов из seed.sql
-    rhumbsData.ts                        getRhumbsList и getRhumbsById по mock
+    rhumbsData.ts                        getRhumbsList, getRhumbsById и getNextRhumbs по mock
   styles/
     rhumbs.css                           весь CSS: rhumbs.css ЛР-2 байт в байт и блок добавок ЛР-5 в конце
 ```
@@ -176,7 +178,6 @@ src/
 | `RhumbsTilesPage` | `useOutletContext` | получить из `RhumbsLayout` список, фильтр и функции их изменения |
 | `RhumbsTilesPage` | `useNavigate` | открыть ленту по клику на карточку |
 | `RhumbsFeedPage` | `useParams` | `id` румба из адреса |
-| `RhumbsFeedPage` | `useOutletContext` | текущий список — найти румб и следующий за ним |
 | `RhumbsFeedPage` | `useNavigate` | перейти к следующему румбу по «Следующий» |
 | `RhumbsFeedPage` | `useState` | `expandedId` — у какого румба раскрыто описание |
 | `RhumbsFeedPage` | `useState` | `failedVideoId` — у какого румба не загрузилось видео |

@@ -1,9 +1,8 @@
 import { useState, type FC } from 'react'
 import { Button } from 'react-bootstrap'
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
-import type { RhumbsOutletData } from '../../RhumbsLayout'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RhumbsCompass } from '../../components/RhumbsCompass/RhumbsCompass'
-import { getRhumbsById } from '../../modules/rhumbsData'
+import { getNextRhumbs, getRhumbsById } from '../../modules/rhumbsData'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
 
 // Заглушка из public: показывается, если videoUrl = null или видео не загрузилось
@@ -11,7 +10,6 @@ const RHUMBS_DEFAULT_VIDEO = '/rhumbs-default.mp4'
 
 export const RhumbsFeedPage: FC = () => {
   const { id } = useParams()
-  const { rhumbsList } = useOutletContext<RhumbsOutletData>()
   const navigate = useNavigate()
   // Состояния привязаны к id румба, поэтому при переходе к следующему сбрасываются сами:
   // у какого румба раскрыто описание и у какого не загрузилось видео
@@ -19,9 +17,8 @@ export const RhumbsFeedPage: FC = () => {
   const [failedVideoId, setFailedVideoId] = useState<number | null>(null)
 
   const rhumbsId = Number(id)
-  // Румб берётся из текущего списка плитки, а если его там нет — из mock по id
-  const rhumbsIndex = rhumbsList.findIndex((listRhumbs) => listRhumbs.id === rhumbsId)
-  const rhumbs = rhumbsIndex === -1 ? getRhumbsById(rhumbsId) : rhumbsList[rhumbsIndex]
+  // Лента — по всем опубликованным румбам, как GET /api/rhumbs/feed/:id: фильтр плитки на неё не влияет
+  const rhumbs = getRhumbsById(rhumbsId)
 
   if (!rhumbs) {
     return (
@@ -31,9 +28,8 @@ export const RhumbsFeedPage: FC = () => {
     )
   }
 
-  // Следующий — по порядку в текущем списке, после последнего — первый
-  const nextRhumbs =
-    rhumbsList.length > 0 ? rhumbsList[(rhumbsIndex + 1) % rhumbsList.length] : undefined
+  // Следующий — по возрастанию id, после последнего — первый (GET /api/rhumbs/feed/:id?next=true)
+  const nextRhumbs = getNextRhumbs(rhumbs.id)
   const nextRhumbsPath = nextRhumbs ? `${RHUMBS_ROUTES.RHUMBS_FEED}/${nextRhumbs.id}` : undefined
 
   return (

@@ -28,7 +28,7 @@ export const RhumbsLayout: FC = () => {
   return (
     <main className="rhumbs-screen">
       <Outlet context={rhumbsOutletData} />
-      <RhumbsNavbar rhumbsList={rhumbsList} />
+      <RhumbsNavbar />
     </main>
   )
 }

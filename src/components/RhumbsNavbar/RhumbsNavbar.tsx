@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { Nav } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
-import type { RhumbsResponse } from '../../modules/rhumbsTypes'
+import { getNextRhumbs } from '../../modules/rhumbsData'
 import { RHUMBS_ROUTE_LABELS, RHUMBS_ROUTES } from '../../RhumbsRoutes'
 
 // Иконки пунктов: Лента, Добавление, Плитка — из ЛР-2; Вход — log-in из Lucide, лицензия ISC
@@ -36,20 +36,18 @@ const RHUMBS_LOGIN_ICON = (
   </svg>
 )
 
-type RhumbsNavbarProps = {
-  rhumbsList: RhumbsResponse[]
-}
-
-export const RhumbsNavbar: FC<RhumbsNavbarProps> = ({ rhumbsList }) => {
+export const RhumbsNavbar: FC = () => {
   const { pathname } = useLocation()
+  // Лента открывается с первого по id румба, как GET /api/rhumbs/feed: фильтр плитки на неё не влияет
+  const firstRhumbs = getNextRhumbs()
 
   // Пункты в порядке показа. Пункт без маршрута (to) виден, но не нажимается:
-  // Добавление и Вход — в ЛР-5 этих страниц нет; Лента — если текущий список пуст
+  // Добавление и Вход — в ЛР-5 этих страниц нет
   const rhumbsNavbarLinks = [
     {
       label: RHUMBS_ROUTE_LABELS.RHUMBS_FEED,
       icon: RHUMBS_FEED_ICON,
-      to: rhumbsList.length > 0 ? `${RHUMBS_ROUTES.RHUMBS_FEED}/${rhumbsList[0].id}` : undefined,
+      to: firstRhumbs ? `${RHUMBS_ROUTES.RHUMBS_FEED}/${firstRhumbs.id}` : undefined,
       active: pathname.startsWith(`${RHUMBS_ROUTES.RHUMBS_FEED}/`),
     },
     { label: RHUMBS_ROUTE_LABELS.RHUMBS_DRAFT, icon: RHUMBS_DRAFT_ICON, to: undefined, active: false },
