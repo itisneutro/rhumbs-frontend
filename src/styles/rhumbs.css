@@ -878,3 +878,35 @@ input[type="range"].rhumbs-tiles__filter-range {
 .rhumbs-feed__video {
   height: calc(100% - 64px);
 }
+
+.rhumbs-feed__next {
+  box-shadow: 0 0 12px rgba(191, 40, 40, .35);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+.rhumbs-feed__next:focus {
+  outline: none;
+}
+
+.rhumbs-feed__next:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.rhumbs-feed__rail::before {
+  content: none;
+}
+
+.rhumbs-feed__info::before {
+  content: "";
+  position: absolute;
+  top: -233px;
+  bottom: -16px;
+  left: -16px;
+  width: 290px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(transparent, rgba(18, 18, 18, .75));
+  -webkit-mask-image: linear-gradient(to right, #000000 270px, transparent 290px);
+  mask-image: linear-gradient(to right, #000000 270px, transparent 290px);
+}
