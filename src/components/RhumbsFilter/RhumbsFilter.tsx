@@ -7,7 +7,6 @@ type RhumbsFilterProps = {
   onSubmit: () => void
 }
 
-// Фильтр по минимальному географическому азимуту
 export const RhumbsFilter: FC<RhumbsFilterProps> = ({ value, setValue, onSubmit }) => (
   <Form
     className="rhumbs-tiles__filter"

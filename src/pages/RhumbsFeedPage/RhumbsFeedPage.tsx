@@ -5,19 +5,15 @@ import { RhumbsCompass } from '../../components/RhumbsCompass/RhumbsCompass'
 import { getNextRhumbs, getRhumbsById } from '../../modules/rhumbsData'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
 
-// Заглушка из public: показывается, если videoUrl = null или видео не загрузилось
 const RHUMBS_DEFAULT_VIDEO = '/rhumbs-default.mp4'
 
 export const RhumbsFeedPage: FC = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  // Состояния привязаны к id румба, поэтому при переходе к следующему сбрасываются сами:
-  // у какого румба раскрыто описание и у какого не загрузилось видео
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [failedVideoId, setFailedVideoId] = useState<number | null>(null)
 
   const rhumbsId = Number(id)
-  // Лента — по всем опубликованным румбам, как GET /api/rhumbs/feed/:id: фильтр плитки на неё не влияет
   const rhumbs = getRhumbsById(rhumbsId)
 
   if (!rhumbs) {
@@ -28,7 +24,6 @@ export const RhumbsFeedPage: FC = () => {
     )
   }
 
-  // Следующий — по возрастанию id, после последнего — первый (GET /api/rhumbs/feed/:id?next=true)
   const nextRhumbs = getNextRhumbs(rhumbs.id)
   const nextRhumbsPath = nextRhumbs ? `${RHUMBS_ROUTES.RHUMBS_FEED}/${nextRhumbs.id}` : undefined
 
@@ -64,7 +59,6 @@ export const RhumbsFeedPage: FC = () => {
             <span className="rhumbs-feed__azimuth-value">{`${rhumbs.magAzimuth}°`}</span>
             <span className="rhumbs-feed__azimuth-label">Магнитный</span>
           </div>
-          {/* У гостя лайк неактивен; иконка красная, если isLiked = 1 */}
           <Button as="div" bsPrefix="rhumbs-feed__likes" variant="" disabled>
             <svg
               className={rhumbs.isLiked === 1 ? 'rhumbs-feed__heart rhumbs-feed__heart--liked' : 'rhumbs-feed__heart'}

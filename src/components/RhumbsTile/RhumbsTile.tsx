@@ -2,7 +2,6 @@ import { useState, type FC } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { RhumbsCompass } from '../RhumbsCompass/RhumbsCompass'
 
-// Заглушка из public: показывается, если imageUrl = null или изображение не загрузилось
 const RHUMBS_DEFAULT_IMAGE = '/rhumbs-default.jpg'
 
 type RhumbsTileProps = {

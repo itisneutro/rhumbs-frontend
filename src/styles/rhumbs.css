@@ -1,14 +1,13 @@
 :root {
-  --rhumbs-accent: #BF2828;  /* windfinder --wf-accent-700: логотип, заголовки, красные кнопки, активная дата */
-  --rhumbs-text: #121212;    /* --wf-text-primary: текст, полоса под активным пунктом хедера */
-  --rhumbs-bg: #FFFFFF;      /* --wf-bg-primary: фон страниц и хедера, белые круглые кнопки на карточках */
-  --rhumbs-border: #CCCCCC;  /* рамка полей ввода и карточек */
-  --rhumbs-surface: #F2F2F2; /* вспомогательный фон */
-  --rhumbs-muted: #656565;   /* вторичный текст, подписи */
-  --rhumbs-overlay: rgba(18, 18, 18, .6); /* подложка подписи поверх изображения на карточке */
+  --rhumbs-accent: #BF2828;
+  --rhumbs-text: #121212;
+  --rhumbs-bg: #FFFFFF;
+  --rhumbs-border: #CCCCCC;
+  --rhumbs-surface: #F2F2F2;
+  --rhumbs-muted: #656565;
+  --rhumbs-overlay: rgba(18, 18, 18, .6);
 }
 
-/* Roboto Condensed, вариативный, лицензия SIL OFL 1.1 — public/fonts/OFL.txt */
 @font-face {
   font-family: "Rhumbs Condensed";
   src: url("/fonts/RobotoCondensed-VariableFont_wght.ttf") format("truetype");
@@ -382,7 +381,6 @@ body {
   gap: 6px;
 }
 
-/* сердце Lucide: сплошная заливка, без обводки; ореол тот же, что у букв */
 .rhumbs-feed__heart {
   display: block;
   width: 22px;
@@ -694,7 +692,6 @@ input[type="range"].rhumbs-tiles__filter-range::-moz-range-thumb {
   gap: 5px;
 }
 
-/* сердце Lucide: сплошная белая заливка, без обводки; ореол тот же, что в ленте */
 .rhumbs-tiles__heart {
   display: block;
   width: 20px;

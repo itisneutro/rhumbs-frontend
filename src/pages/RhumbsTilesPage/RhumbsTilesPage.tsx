@@ -8,8 +8,6 @@ import { getRhumbsList } from '../../modules/rhumbsData'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
 
 export const RhumbsTilesPage: FC = () => {
-  // Список и значение фильтра хранятся в RhumbsLayout и приходят через Outlet context,
-  // поэтому сохраняются при переходе в ленту и обратно
   const { rhumbsList, setRhumbsList, minAzimuth, setMinAzimuth } =
     useOutletContext<RhumbsOutletData>()
   const navigate = useNavigate()

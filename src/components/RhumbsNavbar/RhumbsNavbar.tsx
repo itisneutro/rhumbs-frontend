@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { getNextRhumbs } from '../../modules/rhumbsData'
 import { RHUMBS_ROUTE_LABELS, RHUMBS_ROUTES } from '../../RhumbsRoutes'
 
-// Иконки пунктов: Лента, Добавление, Плитка — из ЛР-2; Вход — log-in из Lucide, лицензия ISC
 const RHUMBS_FEED_ICON = (
   <svg className="rhumbs-tab-bar__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true">
     <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -38,11 +37,8 @@ const RHUMBS_LOGIN_ICON = (
 
 export const RhumbsNavbar: FC = () => {
   const { pathname } = useLocation()
-  // Лента открывается с первого по id румба, как GET /api/rhumbs/feed: фильтр плитки на неё не влияет
   const firstRhumbs = getNextRhumbs()
 
-  // Пункты в порядке показа. Пункт без маршрута (to) виден, но не нажимается:
-  // Добавление и Вход — в ЛР-5 этих страниц нет
   const rhumbsNavbarLinks = [
     {
       label: RHUMBS_ROUTE_LABELS.RHUMBS_FEED,
