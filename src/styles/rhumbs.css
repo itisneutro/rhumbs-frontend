@@ -934,3 +934,29 @@ input[type="range"].rhumbs-tiles__filter-range {
   color: rgba(255, 255, 255, .75);
   font-weight: 400;
 }
+
+.rhumbs-button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.rhumbs-feed__likes {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.rhumbs-draft__input.is-invalid {
+  border-color: var(--rhumbs-accent);
+}
+
+.rhumbs-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, .4);
+  color: var(--rhumbs-accent);
+}

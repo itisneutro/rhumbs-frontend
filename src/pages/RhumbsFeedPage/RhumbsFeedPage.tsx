@@ -1,22 +1,38 @@
-import { useState, type FC } from 'react'
-import { Button } from 'react-bootstrap'
+import { useEffect, useState, type FC } from 'react'
+import { Button, Spinner } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RhumbsCompass } from '../../components/RhumbsCompass/RhumbsCompass'
-import { getNextRhumbs, getRhumbsById } from '../../modules/rhumbsData'
+import type { AppDispatch, RootState } from '../../rhumbsStore'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
+import { getRhumbsFeed, likeRhumbs } from '../../slices/rhumbsSlice'
 
 const RHUMBS_DEFAULT_VIDEO = '/rhumbs-default.mp4'
 
+const RHUMBS_HEART_PATH =
+  'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2' +
+  'A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'
+
 export const RhumbsFeedPage: FC = () => {
   const { id } = useParams()
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const { rhumbsFeed, loading } = useSelector((state: RootState) => state.rhumbs)
+  const isAuthenticated = useSelector((state: RootState) => state.rhumbsUsers.isAuthenticated)
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [failedVideoId, setFailedVideoId] = useState<number | null>(null)
+  const [rhumbsFeedLoadedKey, setRhumbsFeedLoadedKey] = useState<string | null>(null)
 
-  const rhumbsId = Number(id)
-  const rhumbs = getRhumbsById(rhumbsId)
+  const rhumbsFeedKey = id ?? ''
+  const rhumbsId = id === undefined ? undefined : Number(id)
 
-  if (!rhumbs) {
+  useEffect(() => {
+    dispatch(getRhumbsFeed({ id: rhumbsId })).then(() => setRhumbsFeedLoadedKey(rhumbsFeedKey))
+  }, [dispatch, rhumbsId, rhumbsFeedKey])
+
+  const rhumbsFeedLoaded = rhumbsFeedLoadedKey === rhumbsFeedKey
+
+  if (rhumbsFeedLoaded && rhumbsFeed === null) {
     return (
       <div className="rhumbs-missing">
         <h1 className="rhumbs-missing__title">Румб не найден</h1>
@@ -24,8 +40,27 @@ export const RhumbsFeedPage: FC = () => {
     )
   }
 
-  const nextRhumbs = getNextRhumbs(rhumbs.id)
-  const nextRhumbsPath = nextRhumbs ? `${RHUMBS_ROUTES.RHUMBS_FEED}/${nextRhumbs.id}` : undefined
+  const rhumbs =
+    rhumbsFeedLoaded && (rhumbsId === undefined || rhumbsFeed?.id === rhumbsId) ? rhumbsFeed : null
+
+  if (rhumbs === null) {
+    return loading ? null : (
+      <div className="rhumbs-loading">
+        <Spinner animation="border" />
+      </div>
+    )
+  }
+
+  const showNextRhumbs = () => {
+    dispatch(getRhumbsFeed({ id: rhumbs.id, next: true }))
+      .unwrap()
+      .then((nextRhumbs) => {
+        if (nextRhumbs !== null) {
+          navigate(`${RHUMBS_ROUTES.RHUMBS_FEED}/${nextRhumbs.id}`)
+        }
+      })
+      .catch(() => null)
+  }
 
   return (
     <>
@@ -59,15 +94,26 @@ export const RhumbsFeedPage: FC = () => {
             <span className="rhumbs-feed__azimuth-value">{`${rhumbs.magAzimuth}°`}</span>
             <span className="rhumbs-feed__azimuth-label">Магнитный</span>
           </div>
-          <Button as="div" bsPrefix="rhumbs-feed__likes" variant="" disabled>
+          <Button
+            bsPrefix="rhumbs-feed__likes"
+            variant=""
+            disabled={!isAuthenticated || loading}
+            onClick={() =>
+              dispatch(likeRhumbs({ id: rhumbs.id, isLiked: rhumbs.isLiked === 1 ? 0 : 1 }))
+            }
+          >
             <svg
-              className={rhumbs.isLiked === 1 ? 'rhumbs-feed__heart rhumbs-feed__heart--liked' : 'rhumbs-feed__heart'}
+              className={
+                rhumbs.isLiked === 1
+                  ? 'rhumbs-feed__heart rhumbs-feed__heart--liked'
+                  : 'rhumbs-feed__heart'
+              }
               viewBox="0 0 24 24"
               width="22"
               height="22"
               aria-hidden="true"
             >
-              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" strokeLinejoin="round" strokeLinecap="round" />
+              <path d={RHUMBS_HEART_PATH} strokeLinejoin="round" strokeLinecap="round" />
             </svg>
             <span className="rhumbs-feed__likes-count">{rhumbs.likesCount}</span>
           </Button>
@@ -76,18 +122,25 @@ export const RhumbsFeedPage: FC = () => {
           as="a"
           bsPrefix="rhumbs-feed__next"
           variant=""
-          href={nextRhumbsPath}
           aria-label="Следующий"
-          disabled={nextRhumbs === undefined}
-          onClick={(event) => {
-            event.preventDefault()
-            if (nextRhumbsPath) {
-              navigate(nextRhumbsPath)
-            }
-          }}
+          disabled={loading}
+          onClick={showNextRhumbs}
         >
-          <svg className="rhumbs-feed__chevron" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-            <path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            className="rhumbs-feed__chevron"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 9l7 7 7-7"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </Button>
       </div>

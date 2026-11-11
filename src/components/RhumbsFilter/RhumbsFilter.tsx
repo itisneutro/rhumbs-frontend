@@ -2,12 +2,18 @@ import type { FC } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 type RhumbsFilterProps = {
-  value: number | undefined
-  setValue: (value: number | undefined) => void
+  minAzimuth: number
+  setMinAzimuth: (minAzimuth: number) => void
   onSubmit: () => void
+  disabled: boolean
 }
 
-export const RhumbsFilter: FC<RhumbsFilterProps> = ({ value, setValue, onSubmit }) => (
+export const RhumbsFilter: FC<RhumbsFilterProps> = ({
+  minAzimuth,
+  setMinAzimuth,
+  onSubmit,
+  disabled,
+}) => (
   <Form
     className="rhumbs-tiles__filter"
     onSubmit={(event) => {
@@ -24,15 +30,16 @@ export const RhumbsFilter: FC<RhumbsFilterProps> = ({ value, setValue, onSubmit 
       min={0}
       max={315}
       step={45}
-      value={value ?? 0}
-      onChange={(event) => setValue(Number(event.target.value))}
+      value={minAzimuth}
+      onChange={(event) => setMinAzimuth(Number(event.target.value))}
     />
-    <span className="rhumbs-tiles__filter-value">{`${value ?? 0}°`}</span>
+    <span className="rhumbs-tiles__filter-value">{`${minAzimuth}°`}</span>
     <Button
       type="submit"
       bsPrefix="rhumbs-button"
       variant=""
       className="rhumbs-button--small rhumbs-tiles__filter-button"
+      disabled={disabled}
     >
       Найти
     </Button>
