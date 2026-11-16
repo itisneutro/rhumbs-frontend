@@ -1,5 +1,7 @@
 import type { RhumbsResponse } from './rhumbsTypes'
 
+const RHUMBS_MOCK_URL = `${import.meta.env.BASE_URL}rhumbs-mock/`
+
 export const RHUMBS_MOCK: RhumbsResponse[] = [
   {
     id: 1,
@@ -7,8 +9,8 @@ export const RHUMBS_MOCK: RhumbsResponse[] = [
     description:
       'Ветер с севера. На путевом угле 130° даёт попутную составляющую около 0,64 ' +
       'скорости ветра и умеренный снос вправо. Время полёта Лондон–Париж сокращается.',
-    imageUrl: '/rhumbs-mock/rhumbs-north.jpg',
-    videoUrl: '/rhumbs-mock/rhumbs-north.mp4',
+    imageUrl: `${RHUMBS_MOCK_URL}rhumbs-north.jpg`,
+    videoUrl: `${RHUMBS_MOCK_URL}rhumbs-north.mp4`,
     geoAzimuth: 0,
     magAzimuth: 348.5,
     likesCount: 3,
@@ -35,8 +37,8 @@ export const RHUMBS_MOCK: RhumbsResponse[] = [
     description:
       'Ветер с востока. Даёт встречную составляющую около 0,77 скорости ветра. ' +
       'Путевая скорость Boeing-737 NG падает, время полёта растёт.',
-    imageUrl: '/rhumbs-mock/rhumbs-east.jpg',
-    videoUrl: '/rhumbs-mock/rhumbs-east.mp4',
+    imageUrl: `${RHUMBS_MOCK_URL}rhumbs-east.jpg`,
+    videoUrl: `${RHUMBS_MOCK_URL}rhumbs-east.mp4`,
     geoAzimuth: 90,
     magAzimuth: 78.5,
     likesCount: 2,
@@ -50,8 +52,8 @@ export const RHUMBS_MOCK: RhumbsResponse[] = [
       'Ветер с юго-востока, почти строго навстречу путевому углу 130°. ' +
       'Наихудший румб маршрута: встречная составляющая близка к полной скорости ветра, ' +
       'время полёта максимально.',
-    imageUrl: '/rhumbs-mock/rhumbs-south-east.jpg',
-    videoUrl: '/rhumbs-mock/rhumbs-south-east.mp4',
+    imageUrl: `${RHUMBS_MOCK_URL}rhumbs-south-east.jpg`,
+    videoUrl: `${RHUMBS_MOCK_URL}rhumbs-south-east.mp4`,
     geoAzimuth: 135,
     magAzimuth: 123.5,
     likesCount: 2,
@@ -64,8 +66,8 @@ export const RHUMBS_MOCK: RhumbsResponse[] = [
     description:
       'Ветер с юга. Встречная составляющая около 0,64 скорости ветра при заметном сносе ' +
       'влево. Время полёта увеличивается умеренно.',
-    imageUrl: '/rhumbs-mock/rhumbs-south.jpg',
-    videoUrl: '/rhumbs-mock/rhumbs-south.mp4',
+    imageUrl: `${RHUMBS_MOCK_URL}rhumbs-south.jpg`,
+    videoUrl: `${RHUMBS_MOCK_URL}rhumbs-south.mp4`,
     geoAzimuth: 180,
     magAzimuth: 168.5,
     likesCount: 1,
@@ -78,8 +80,8 @@ export const RHUMBS_MOCK: RhumbsResponse[] = [
     description:
       'Ветер с запада. Попутная составляющая около 0,77 скорости ветра. ' +
       'Путевая скорость растёт, время полёта Лондон–Париж сокращается заметно.',
-    imageUrl: '/rhumbs-mock/rhumbs-west.jpg',
-    videoUrl: '/rhumbs-mock/rhumbs-west.mp4',
+    imageUrl: `${RHUMBS_MOCK_URL}rhumbs-west.jpg`,
+    videoUrl: `${RHUMBS_MOCK_URL}rhumbs-west.mp4`,
     geoAzimuth: 270,
     magAzimuth: 258.5,
     likesCount: 1,

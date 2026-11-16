@@ -6,8 +6,8 @@ import type { AppDispatch, RootState } from '../../rhumbsStore'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
 import { createRhumbs, getRhumbsDraft, publishRhumbs } from '../../slices/rhumbsSlice'
 
-const RHUMBS_DEFAULT_IMAGE = '/rhumbs-default.jpg'
-const RHUMBS_DEFAULT_VIDEO = '/rhumbs-default.mp4'
+const RHUMBS_DEFAULT_IMAGE = `${import.meta.env.BASE_URL}rhumbs-default.jpg`
+const RHUMBS_DEFAULT_VIDEO = `${import.meta.env.BASE_URL}rhumbs-default.mp4`
 
 type RhumbsDraftFile = {
   file: File

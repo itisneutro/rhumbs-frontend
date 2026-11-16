@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from 'react'
+import { useEffect, useState, useSyncExternalStore, type FC } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -7,11 +7,21 @@ import type { AppDispatch, RootState } from '../../rhumbsStore'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
 import { getRhumbsFeed, likeRhumbs } from '../../slices/rhumbsSlice'
 
-const RHUMBS_DEFAULT_VIDEO = '/rhumbs-default.mp4'
+const RHUMBS_DEFAULT_VIDEO = `${import.meta.env.BASE_URL}rhumbs-default.mp4`
+const RHUMBS_DEFAULT_IMAGE = `${import.meta.env.BASE_URL}rhumbs-default.jpg`
+const RHUMBS_WIDE_QUERY = '(min-width: 576px)'
 
 const RHUMBS_HEART_PATH =
   'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2' +
   'A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'
+
+const subscribeRhumbsWide = (onRhumbsWideChange: () => void) => {
+  const rhumbsWideMedia = window.matchMedia(RHUMBS_WIDE_QUERY)
+  rhumbsWideMedia.addEventListener('change', onRhumbsWideChange)
+  return () => rhumbsWideMedia.removeEventListener('change', onRhumbsWideChange)
+}
+
+const getRhumbsWide = () => window.matchMedia(RHUMBS_WIDE_QUERY).matches
 
 export const RhumbsFeedPage: FC = () => {
   const { id } = useParams()
@@ -22,6 +32,8 @@ export const RhumbsFeedPage: FC = () => {
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [failedVideoId, setFailedVideoId] = useState<number | null>(null)
   const [rhumbsFeedLoadedKey, setRhumbsFeedLoadedKey] = useState<string | null>(null)
+  const [rhumbsPulseId, setRhumbsPulseId] = useState<number | null>(null)
+  const rhumbsWide = useSyncExternalStore(subscribeRhumbsWide, getRhumbsWide)
 
   const rhumbsFeedKey = id ?? ''
   const rhumbsId = id === undefined ? undefined : Number(id)
@@ -62,15 +74,41 @@ export const RhumbsFeedPage: FC = () => {
       .catch(() => null)
   }
 
+  const toggleRhumbsLike = () => {
+    dispatch(likeRhumbs({ id: rhumbs.id, isLiked: rhumbs.isLiked === 1 ? 0 : 1 }))
+      .unwrap()
+      .then(() => setRhumbsPulseId(rhumbs.id))
+      .catch(() => null)
+  }
+
+  const rhumbsVideo =
+    rhumbs.videoUrl !== null && failedVideoId !== rhumbs.id
+      ? rhumbs.videoUrl
+      : RHUMBS_DEFAULT_VIDEO
+  const rhumbsPoster = rhumbs.imageUrl ?? RHUMBS_DEFAULT_IMAGE
+
   return (
     <>
+      {rhumbsWide && (
+        <video
+          className="rhumbs-feed__ambient"
+          src={rhumbsVideo}
+          poster={rhumbsPoster}
+          muted
+          autoPlay
+          loop
+          playsInline
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      )}
+
       <video
+        key={`rhumbs-video-${rhumbs.id}`}
         className="rhumbs-feed__video"
-        src={
-          rhumbs.videoUrl !== null && failedVideoId !== rhumbs.id
-            ? rhumbs.videoUrl
-            : RHUMBS_DEFAULT_VIDEO
-        }
+        src={rhumbsVideo}
+        poster={rhumbsPoster}
+        preload="metadata"
         autoPlay
         loop
         muted
@@ -98,20 +136,21 @@ export const RhumbsFeedPage: FC = () => {
             bsPrefix="rhumbs-feed__likes"
             variant=""
             disabled={!isAuthenticated || loading}
-            onClick={() =>
-              dispatch(likeRhumbs({ id: rhumbs.id, isLiked: rhumbs.isLiked === 1 ? 0 : 1 }))
-            }
+            onClick={toggleRhumbsLike}
           >
             <svg
-              className={
-                rhumbs.isLiked === 1
-                  ? 'rhumbs-feed__heart rhumbs-feed__heart--liked'
-                  : 'rhumbs-feed__heart'
-              }
+              className={[
+                'rhumbs-feed__heart',
+                rhumbs.isLiked === 1 && 'rhumbs-feed__heart--liked',
+                rhumbsPulseId === rhumbs.id && 'rhumbs-feed__heart--pulse',
+              ]
+                .filter(Boolean)
+                .join(' ')}
               viewBox="0 0 24 24"
               width="22"
               height="22"
               aria-hidden="true"
+              onAnimationEnd={() => setRhumbsPulseId(null)}
             >
               <path d={RHUMBS_HEART_PATH} strokeLinejoin="round" strokeLinecap="round" />
             </svg>
@@ -145,7 +184,7 @@ export const RhumbsFeedPage: FC = () => {
         </Button>
       </div>
 
-      <div className="rhumbs-feed__info">
+      <div key={`rhumbs-info-${rhumbs.id}`} className="rhumbs-feed__info">
         <h1 className="rhumbs-feed__name">{rhumbs.name}</h1>
         {rhumbs.description !== null && (
           <details

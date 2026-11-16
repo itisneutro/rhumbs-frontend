@@ -13,7 +13,14 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dev-dist
 *.local
+
+*.key
+*.crt
+*.pem
+ca.*
+cert.*
 
 .vscode/*
 !.vscode/extensions.json

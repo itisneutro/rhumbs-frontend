@@ -8,7 +8,7 @@ import { RHUMBS_ROUTES } from './RhumbsRoutes'
 
 function RhumbsApp() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <Routes>
         <Route path="/" element={<Navigate to={RHUMBS_ROUTES.RHUMBS} replace />} />
         <Route element={<RhumbsLayout />}>

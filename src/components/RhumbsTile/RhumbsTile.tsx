@@ -2,7 +2,7 @@ import { useState, type FC } from 'react'
 import { Button, Card, Col, Form } from 'react-bootstrap'
 import { RhumbsCompass } from '../RhumbsCompass/RhumbsCompass'
 
-const RHUMBS_DEFAULT_IMAGE = '/rhumbs-default.jpg'
+const RHUMBS_DEFAULT_IMAGE = `${import.meta.env.BASE_URL}rhumbs-default.jpg`
 
 const RHUMBS_HEART_PATH =
   'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2' +

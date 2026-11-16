@@ -6,11 +6,11 @@ SPA для оценки влияния направления ветра на в
 ## Ссылки
 
 - **Бэкенд:** https://github.com/itisneutro/rhumbs-backend
-- **GitHub Pages:** появится в ЛР-7
+- **GitHub Pages:** https://itisneutro.github.io/rhumbs-frontend/ (работает на mock)
 
 ## Стек
 
-React 19.2.8, TypeScript 6.0.2, Vite 8.3.0, React-Bootstrap 2.10.10, React Router 7.18.4, Redux Toolkit 2.14.0, axios 1.21.1, swagger-typescript-api 13.14.0.
+React 19.2.8, TypeScript 6.0.2, Vite 8.3.0, React-Bootstrap 2.10.10, React Router 7.18.4, Redux Toolkit 2.14.0, axios 1.21.1, swagger-typescript-api 13.14.0, vite-plugin-pwa 2.0.0, gh-pages 6.3.0.
 
 ## Структура проекта
 
@@ -21,10 +21,12 @@ React 19.2.8, TypeScript 6.0.2, Vite 8.3.0, React-Bootstrap 2.10.10, React Route
 | `src/slices` | слайсы Redux: румбы с thunk и пользователь |
 | `src/api` | клиент axios, сгенерированный из Swagger (`Api.ts` — не править руками), и экземпляр `api` |
 | `src/modules` | mock-данные, типы и преобразование адресов медиа |
-| `src/styles` | стили приложения `rhumbs.css` |
+| `src/styles` | стили приложения `rhumbs.css` и шрифт `fonts` |
 | `public` | заглушки изображения и видео, mock-файлы `rhumbs-mock` |
+| `public/rhumbs-icon.svg` | иконка приложения: белая роза румбов на красном фоне |
+| `public/rhumbs-icon-192.png`, `public/rhumbs-icon-512.png`, `public/apple-touch-icon.png` | иконки PWA и iOS, сгенерированные из `rhumbs-icon.svg` |
 | `scripts/generate-api.mjs` | кодогенерация `src/api/Api.ts` из Swagger бэкенда |
-| `vite.config.ts` | настройки Vite и прокси `/api`, `/minio` |
+| `vite.config.ts` | настройки Vite: `base` для GitHub Pages, PWA, HTTPS, прокси `/api` и `/minio` |
 
 ## Лабораторные работы
 
@@ -44,6 +46,15 @@ React 19.2.8, TypeScript 6.0.2, Vite 8.3.0, React-Bootstrap 2.10.10, React Route
   - клиент axios, сгенерированный из Swagger; прокси `/api` и `/minio`
   - вход и выход, страницы «Добавление» и «Вход»
   - удаление своих румбов и лайки
+
+#### Лабораторная 7
+
+- **Ветка:** `rhumbs-pwa-lab7`
+- **Что сделано:**
+  - адаптивность: 2/3/4 колонки плитки по ширине экрана
+  - GitHub Pages с mock
+  - PWA
+  - HTTPS на dev-сервере Vite, доступ с телефона по IP ноутбука через реверс-прокси
 
 ## Страницы
 
@@ -73,8 +84,8 @@ React 19.2.8, TypeScript 6.0.2, Vite 8.3.0, React-Bootstrap 2.10.10, React Route
 
 - **Маршрут:** `/rhumbs`
 - **Поля:** фильтр — «Азимут от», слайдер от 0 до 315 с шагом 45 и значение в градусах;
-  карточки в 2 колонки — изображение, название, роза румбов, азимуты «Географический» и
-  «Магнитный», число лайков
+  карточки в 2, 3 или 4 колонки по ширине экрана — изображение, название, роза румбов,
+  азимуты «Географический» и «Магнитный», число лайков
 - **Кнопки:** «Найти» — румбы с географическим азимутом не меньше выбранного; клик по
   карточке — лента с этого румба; «Удалить» на карточке
 - **Гость:** смотрит и фильтрует румбы
@@ -112,3 +123,19 @@ npm run dev
   (префикс `/minio` убирается)
 - **Без бэкенда:** гость видит mock-данные (`src/modules/rhumbsMock.ts`, файлы в
   `public/rhumbs-mock`), у диспетчера mock нет
+- **GitHub Pages:** `npm run build`, затем `npm run deploy` — сборка `dist` публикуется в
+  ветку `gh-pages`
+
+Сертификаты для HTTPS создаются в корне проекта и в git не попадают:
+
+```bash
+npm i -g mkcert
+mkcert create-ca
+mkcert create-cert --domains localhost 127.0.0.1 IP_НОУТБУКА
+```
+
+- **HTTPS:** если в корне есть `cert.key` и `cert.crt`, dev-сервер работает по https,
+  иначе — по http
+- **Телефон:** https://IP_НОУТБУКА:5173 в той же сети — dev-сервер Vite работает как
+  реверс-прокси к бэкенду ноутбука (`/api`, `/minio`); на телефон установить `ca.crt` и
+  включить к нему доверие
