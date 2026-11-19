@@ -1,7 +1,11 @@
-import { useEffect, useState, type ChangeEvent, type FC, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type DragEvent, type FC, type FormEvent } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { RhumbsBackdrop } from '../../components/RhumbsBackdrop/RhumbsBackdrop'
+import { RhumbsWind } from '../../components/RhumbsWind/RhumbsWind'
+import { useRhumbsMutedVideo } from '../../hooks/useRhumbsMutedVideo'
+import { useRhumbsStill } from '../../hooks/useRhumbsStill'
 import type { AppDispatch, RootState } from '../../rhumbsStore'
 import { RHUMBS_ROUTES } from '../../RhumbsRoutes'
 import { createRhumbs, getRhumbsDraft, publishRhumbs } from '../../slices/rhumbsSlice'
@@ -14,13 +18,10 @@ type RhumbsDraftFile = {
   url: string
 }
 
-const getRhumbsDraftFile = (event: ChangeEvent<HTMLInputElement>): RhumbsDraftFile | null => {
-  const rhumbsFile = event.target.files?.[0]
+type RhumbsDraftKind = 'image' | 'video'
 
-  return rhumbsFile === undefined
-    ? null
-    : { file: rhumbsFile, url: URL.createObjectURL(rhumbsFile) }
-}
+const getRhumbsDraftFile = (rhumbsFile: File | undefined): RhumbsDraftFile | null =>
+  rhumbsFile === undefined ? null : { file: rhumbsFile, url: URL.createObjectURL(rhumbsFile) }
 
 export const RhumbsDraftPage: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -33,6 +34,11 @@ export const RhumbsDraftPage: FC = () => {
   const [rhumbsDescription, setRhumbsDescription] = useState<string | null>(null)
   const [rhumbsGeoAzimuth, setRhumbsGeoAzimuth] = useState<string | null>(null)
   const [rhumbsMagAzimuth, setRhumbsMagAzimuth] = useState<string | null>(null)
+  const [rhumbsDragKind, setRhumbsDragKind] = useState<RhumbsDraftKind | null>(null)
+  const rhumbsPreviewRef = useRef<HTMLVideoElement>(null)
+  const rhumbsStill = useRhumbsStill()
+
+  useRhumbsMutedVideo(rhumbsPreviewRef, true)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -69,6 +75,49 @@ export const RhumbsDraftPage: FC = () => {
   const rhumbsDraftImage = rhumbsDraft === null ? (rhumbsImage?.url ?? null) : rhumbsDraft.imageUrl
   const rhumbsDraftVideo = rhumbsDraft === null ? (rhumbsVideo?.url ?? null) : rhumbsDraft.videoUrl
 
+  const dragRhumbsFile = (rhumbsKind: RhumbsDraftKind, event: DragEvent<HTMLDivElement>) => {
+    if (rhumbsDraft !== null) {
+      return
+    }
+
+    event.preventDefault()
+    setRhumbsDragKind(rhumbsKind)
+  }
+
+  const leaveRhumbsFile = (event: DragEvent<HTMLDivElement>) => {
+    const rhumbsTarget = event.relatedTarget
+
+    if (!(rhumbsTarget instanceof Node && event.currentTarget.contains(rhumbsTarget))) {
+      setRhumbsDragKind(null)
+    }
+  }
+
+  const dropRhumbsFile = (rhumbsKind: RhumbsDraftKind, event: DragEvent<HTMLDivElement>) => {
+    if (rhumbsDraft !== null) {
+      return
+    }
+
+    event.preventDefault()
+    setRhumbsDragKind(null)
+
+    const rhumbsFile = event.dataTransfer.files.item(0)
+
+    if (rhumbsFile === null || !rhumbsFile.type.startsWith(`${rhumbsKind}/`)) {
+      return
+    }
+
+    if (rhumbsKind === 'image') {
+      setRhumbsImage(getRhumbsDraftFile(rhumbsFile))
+    } else {
+      setRhumbsVideo(getRhumbsDraftFile(rhumbsFile))
+    }
+  }
+
+  const getRhumbsMediaClass = (rhumbsKind: RhumbsDraftKind) =>
+    rhumbsDragKind === rhumbsKind
+      ? 'rhumbs-draft__media rhumbs-draft__media--drag'
+      : 'rhumbs-draft__media'
+
   const submitRhumbsDraft = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -98,10 +147,18 @@ export const RhumbsDraftPage: FC = () => {
 
   return (
     <>
+      <RhumbsBackdrop />
+      <RhumbsWind />
       <h1 className="rhumbs-draft__title">Добавление румба</h1>
       <Form className="rhumbs-draft__form" onSubmit={submitRhumbsDraft}>
-        <div className="rhumbs-draft__media">
+        <div
+          className={getRhumbsMediaClass('image')}
+          onDragOver={(event) => dragRhumbsFile('image', event)}
+          onDragLeave={leaveRhumbsFile}
+          onDrop={(event) => dropRhumbsFile('image', event)}
+        >
           <div
+            key={rhumbsDraftImage ?? RHUMBS_DEFAULT_IMAGE}
             className="rhumbs-draft__preview"
             style={{
               backgroundImage:
@@ -117,23 +174,38 @@ export const RhumbsDraftPage: FC = () => {
                 className="rhumbs-draft__file"
                 type="file"
                 accept="image/*"
-                onChange={(event) => setRhumbsImage(getRhumbsDraftFile(event))}
+                onChange={(event) => setRhumbsImage(getRhumbsDraftFile(event.target.files?.[0]))}
               />
             </Form.Label>
           )}
         </div>
 
-        <div className="rhumbs-draft__media">
-          <video
-            key={rhumbsDraftVideo ?? RHUMBS_DEFAULT_VIDEO}
-            className="rhumbs-draft__preview"
-            preload="metadata"
-            muted
-            playsInline
-          >
-            {rhumbsDraftVideo !== null && <source src={`${rhumbsDraftVideo}#t=0.5`} />}
-            <source src={`${RHUMBS_DEFAULT_VIDEO}#t=0.5`} type="video/mp4" />
-          </video>
+        <div
+          className={getRhumbsMediaClass('video')}
+          onDragOver={(event) => dragRhumbsFile('video', event)}
+          onDragLeave={leaveRhumbsFile}
+          onDrop={(event) => dropRhumbsFile('video', event)}
+        >
+          {rhumbsDraftVideo === null && rhumbsStill ? (
+            <div
+              className="rhumbs-draft__preview"
+              style={{ backgroundImage: `url('${RHUMBS_DEFAULT_IMAGE}')` }}
+            />
+          ) : (
+            <video
+              key={rhumbsDraftVideo ?? RHUMBS_DEFAULT_VIDEO}
+              ref={rhumbsPreviewRef}
+              className="rhumbs-draft__preview"
+              preload="metadata"
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              {rhumbsDraftVideo !== null && <source src={`${rhumbsDraftVideo}#t=0.5`} />}
+              <source src={`${RHUMBS_DEFAULT_VIDEO}#t=0.5`} type="video/mp4" />
+            </video>
+          )}
           {rhumbsDraft === null && (
             <Form.Label bsPrefix="rhumbs-button" className="rhumbs-button--small">
               Выбрать
@@ -141,7 +213,7 @@ export const RhumbsDraftPage: FC = () => {
                 className="rhumbs-draft__file"
                 type="file"
                 accept="video/*"
-                onChange={(event) => setRhumbsVideo(getRhumbsDraftFile(event))}
+                onChange={(event) => setRhumbsVideo(getRhumbsDraftFile(event.target.files?.[0]))}
               />
             </Form.Label>
           )}

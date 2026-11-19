@@ -33,7 +33,7 @@ export const RhumbsFilter: FC<RhumbsFilterProps> = ({
       value={minAzimuth}
       onChange={(event) => setMinAzimuth(Number(event.target.value))}
     />
-    <span className="rhumbs-tiles__filter-value">{`${minAzimuth}°`}</span>
+    <span key={minAzimuth} className="rhumbs-tiles__filter-value">{`${minAzimuth}°`}</span>
     <Button
       type="submit"
       bsPrefix="rhumbs-button"

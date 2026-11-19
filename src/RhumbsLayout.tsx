@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { Spinner } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { RhumbsNavbar } from './components/RhumbsNavbar/RhumbsNavbar'
@@ -12,11 +11,7 @@ export const RhumbsLayout: FC = () => {
     <main className="rhumbs-screen">
       <Outlet />
       <RhumbsNavbar />
-      {rhumbsLoading && (
-        <div className="rhumbs-loading">
-          <Spinner animation="border" />
-        </div>
-      )}
+      {rhumbsLoading && <div className="rhumbs-progress" aria-hidden="true" />}
     </main>
   )
 }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { FC, ReactNode } from 'react'
 import { Nav } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import type { AppDispatch, RootState } from '../../rhumbsStore'
 import { RHUMBS_LOGOUT_LABEL, RHUMBS_ROUTE_LABELS, RHUMBS_ROUTES } from '../../RhumbsRoutes'
 import { getRhumbsList, resetRhumbsFilter } from '../../slices/rhumbsSlice'
@@ -155,6 +155,8 @@ export const RhumbsNavbar: FC = () => {
         },
   ]
 
+  const rhumbsActiveIndex = rhumbsNavbarLinks.findIndex(({ active }) => active)
+
   return (
     <Nav as="nav" bsPrefix="rhumbs-tab-bar">
       {rhumbsNavbarLinks.map(({ label, icon, to, onClick, active }) => {
@@ -164,8 +166,10 @@ export const RhumbsNavbar: FC = () => {
               key={label}
               bsPrefix="rhumbs-tab-bar__tab"
               className={active ? 'rhumbs-tab-bar__tab--active' : undefined}
-              as={Link}
+              as={NavLink}
               to={to}
+              end={to !== RHUMBS_ROUTES.RHUMBS_FEED}
+              viewTransition
             >
               {icon}
               <span className="rhumbs-tab-bar__label">{label}</span>
@@ -194,6 +198,13 @@ export const RhumbsNavbar: FC = () => {
           </Nav.Link>
         )
       })}
+      {rhumbsActiveIndex >= 0 && (
+        <span
+          className="rhumbs-tab-bar__indicator"
+          style={{ transform: `translateX(${rhumbsActiveIndex * 100}%)` }}
+          aria-hidden="true"
+        />
+      )}
     </Nav>
   )
 }
