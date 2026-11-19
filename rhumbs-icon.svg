@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#BF2828"/>
+  <g transform="translate(96 96) scale(3.2)" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.25" stroke-linejoin="round">
+    <circle cx="50" cy="50" r="47" fill="none"/>
+    <polygon points="56.36,43.64 54.77,35.23 69.09,30.91" fill="none"/>
+    <polygon points="56.36,43.64 69.09,30.91 64.77,45.23" stroke="none"/>
+    <polygon points="56.36,56.36 64.77,54.77 69.09,69.09" fill="none"/>
+    <polygon points="56.36,56.36 69.09,69.09 54.77,64.77" stroke="none"/>
+    <polygon points="43.64,56.36 45.23,64.77 30.91,69.09" fill="none"/>
+    <polygon points="43.64,56.36 30.91,69.09 35.23,54.77" stroke="none"/>
+    <polygon points="43.64,43.64 35.23,45.23 30.91,30.91" fill="none"/>
+    <polygon points="43.64,43.64 30.91,30.91 45.23,35.23" stroke="none"/>
+    <polygon points="50,50 43.64,43.64 50,10" fill="none"/>
+    <polygon points="50,50 50,10 56.36,43.64" stroke="none"/>
+    <polygon points="50,50 56.36,43.64 90,50" fill="none"/>
+    <polygon points="50,50 90,50 56.36,56.36" stroke="none"/>
+    <polygon points="50,50 56.36,56.36 50,90" fill="none"/>
+    <polygon points="50,50 50,90 43.64,56.36" stroke="none"/>
+    <polygon points="50,50 43.64,56.36 10,50" fill="none"/>
+    <polygon points="50,50 10,50 43.64,43.64" stroke="none"/>
+    <circle cx="50" cy="50" r="3.5" stroke="none"/>
+  </g>
+</svg>
